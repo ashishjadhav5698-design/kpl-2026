@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KPL 2026 - Auction</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .auction-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .player-select,
+        .auction-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .result-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .result-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .sold-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .unsold-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .selected {
+            outline: 4px solid #222;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff7a00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            margin-top: 15px;
+        }
+
+        .auction-table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #222;
+            color: white;
+        }
+
+        .sold {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .unsold {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="logo">🏏</div>
+
+    <h1>KHARADE PREMIER LEAGUE</h1>
+
+    <h2>KPL 2026</h2>
+
+    <p>🏆 AUCTION MANAGEMENT</p>
+
+</header>
+
+
+<main class="container">
+
+    <!-- LOGIN -->
+
+    <div id="loginBox" class="auction-card">
+
+        <h2>🔐 Admin Login</h2>
+
+        <p>Login to manage the KPL 2026 auction.</p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Admin email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="save-btn">
+                🔐 LOGIN
+            </button>
+
+        </form>
+
+        <div id="loginMessage" class="message error"></div>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboard" style="display:none;">
+
+        <!-- AUCTION MANAGEMENT -->
+
+        <div class="auction-card">
+
+            <h2>🏆 Auction Management</h2>
+
+            <p>Select a registered player and enter the auction result.</p>
+
+
+            <label>
+                <strong>Select Player</strong>
+            </label>
+
+            <select id="playerSelect" class="player-select">
+
+                <option value="">
+                    -- Select Player --
+                </option>
+
+            </select>
+
+
+            <div id="playerInfo" style="display:none;">
+
+                <p>
+                    <strong>Registration ID:</strong>
+                    <span id="playerId"></span>
+                </p>
+
+                <p>
+                    <strong>Player:</strong>
+                    <span id="playerName"></span>
+                </p>
+
+                <p>
+                    <strong>Role:</strong>
+                    <span id="playerRole"></span>
+                </p>
+
+            </div>
+
+
+            <h3>Auction Result</h3>
+
+
+            <div class="result-buttons">
+
+                <button
+                    type="button"
+                    id="soldBtn"
+                    class="result-btn sold-btn">
+
+                    🟢 SOLD
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="unsoldBtn"
+                    class="result-btn unsold-btn">
+
+                    🔴 UNSOLD
+
+                </button>
+
+            </div>
+
+
+            <!-- TEAM -->
+
+            <div id="teamSection" style="display:none;">
+
+                <label>
+                    <strong>Select Team</strong>
+                </label>
+
+                <select
+                    id="teamSelect"
+                    class="player-select">
+
+                    <option value="">
+                        -- Select Team --
+                    </option>
+
+                    <option value="Team 1">
+                        Team 1
+                    </option>
+
+                    <option value="Team 2">
+                        Team 2
+                    </option>
+
+                    <option value="Team 3">
+                        Team 3
+                    </option>
+
+                    <option value="Team 4">
+                        Team 4
+                    </option>
+
+                    <option value="Team 5">
+                        Team 5
+                    </option>
+
+                    <option value="Team 6">
+                        Team 6
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PRICE -->
+
+            <div id="priceSection" style="display:none;">
+
+                <label>
+                    <strong>Auction Price (₹)</strong>
+                </label>
+
+                <input
+                    type="number"
+                    id="auctionPrice"
+                    class="auction-input"
+                    placeholder="Enter auction price"
+                    min="1"
+                >
+
+            </div>
+
+
+            <button
+                id="saveAuction"
+                class="save-btn">
+
+                💾 SAVE AUCTION RESULT
+
+            </button>
+
+
+            <div
+                id="saveMessage"
+                class="message">
+            </div>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div class="auction-card">
+
+            <h2>📋 Auction Results</h2>
+
+            <div class="auction-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Registration ID</th>
+                            <th>Player</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Team</th>
+                            <th>Price</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="auctionTable">
+
+                        <tr>
+
+                            <td colspan="7">
+                                Loading...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="logoutBtn"
+            class="save-btn logout-btn">
+
+            🚪 LOGOUT
+
+        </button>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <p>© 2026 Kharade Premier League</p>
+
+    <p>KPL 2026 • Auction Management</p>
+
+</footer>
+
+
+<script type="module">
+
+/* =========================================
+   FIREBASE IMPORTS
+========================================= */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =========================================
+   FIREBASE CONFIG
+========================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBcOoGJTnPZg8wrB_BRb_3GQFtaG_6BEWo",
+
+    authDomain:
+    "kpl-2026.firebaseapp.com",
+
+    projectId:
+    "kpl-2026",
+
+    storageBucket:
+    "kpl-2026.firebasestorage.app",
+
+    messagingSenderId:
+    "660219856516",
+
+    appId:
+    "1:660219856516:web:cb23a915081b9e5c6aa4d1"
+
+};
+
+
+/* =========================================
+   INITIALIZE FIREBASE
+========================================= */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let players = [];
+
+let selectedResult = "";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const loginBox =
+document.getElementById("loginBox");
+
+const dashboard =
+document.getElementById("dashboard");
+
+const loginForm =
+document.getElementById("loginForm");
+
+const playerSelect =
+document.getElementById("playerSelect");
+
+const soldBtn =
+document.getElementById("soldBtn");
+
+const unsoldBtn =
+document.getElementById("unsoldBtn");
+
+const teamSection =
+document.getElementById("teamSection");
+
+const priceSection =
+document.getElementById("priceSection");
+
+const loginMessage =
+document.getElementById("loginMessage");
+
+const saveMessage =
+document.getElementById("saveMessage");
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const email =
+        document.getElementById("email")
+        .value
+        .trim();
+
+        const password =
+        document.getElementById("password")
+        .value;
+
+
+        if (!email || !password) {
+
+            showLoginError(
+                "Please enter email and password."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            console.log(
+                "KPL Admin Login started..."
+            );
+
+
+            const result =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+            console.log(
+                "Login successful:",
+                result.user.email
+            );
+
+
+            loginBox.style.display = "none";
+
+            dashboard.style.display = "block";
+
+
+            await loadPlayers();
+
+            await loadAuctionResults();
+
+
+        } catch(error) {
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            showLoginError(
+                "Login failed: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   SHOW LOGIN ERROR
+========================================= */
+
+function showLoginError(message) {
+
+    loginMessage.textContent = message;
+
+    loginMessage.style.display = "block";
+
+}
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+onAuthStateChanged(
+    auth,
+    async function(user) {
+
+        console.log(
+            "Auth state:",
+            user
+                ? user.email
+                : "Not logged in"
+        );
+
+
+        if (user) {
+
+            loginBox.style.display = "none";
+
+            dashboard.style.display = "block";
+
+
+            try {
+
+                await loadPlayers();
+
+                await loadAuctionResults();
+
+            } catch(error) {
+
+                console.error(error);
+
+            }
+
+        } else {
+
+            loginBox.style.display = "block";
+
+            dashboard.style.display = "none";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOAD PLAYERS
+========================================= */
+
+async function loadPlayers() {
+
+    console.log(
+        "Loading registered players..."
+    );
+
+
+    const snapshot =
+    await getDocs(
+        collection(db, "players")
+    );
+
+
+    players = [];
+
+
+    snapshot.forEach(
+        function(document) {
+
+            players.push({
+
+                id: document.id,
+
+                ...document.data()
+
+            });
+
+        }
+    );
+
+
+    console.log(
+        "Players loaded:",
+        players.length
+    );
+
+
+    playerSelect.innerHTML =
+    `<option value="">
+        -- Select Player --
+    </option>`;
+
+
+    players.forEach(
+        function(player) {
+
+            playerSelect.innerHTML += `
+
+                <option value="${player.id}">
+
+                    ${player.name || "Unknown"}
+                    -
+                    ${player.role || "Player"}
+
+                </option>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   PLAYER SELECT
+========================================= */
+
+playerSelect.addEventListener(
+    "change",
+    function() {
+
+        const player =
+        players.find(
+            function(p) {
+
+                return p.id ===
+                playerSelect.value;
+
+            }
+        );
+
+
+        const info =
+        document.getElementById(
+            "playerInfo"
+        );
+
+
+        if (!player) {
+
+            info.style.display = "none";
+
+            return;
+
+        }
+
+
+        info.style.display = "block";
+
+
+        document.getElementById(
+            "playerId"
+        ).textContent =
+        player.id;
+
+
+        document.getElementById(
+            "playerName"
+        ).textContent =
+        player.name || "-";
+
+
+        document.getElementById(
+            "playerRole"
+        ).textContent =
+        player.role || "-";
+
+
+        /* Show existing auction data */
+
+        if (player.auctionStatus) {
+
+            if (
+                player.auctionStatus ===
+                "Sold"
+            ) {
+
+                selectedResult = "Sold";
+
+                soldBtn.classList.add(
+                    "selected"
+                );
+
+                unsoldBtn.classList.remove(
+                    "selected"
+                );
+
+                teamSection.style.display =
+                "block";
+
+                priceSection.style.display =
+                "block";
+
+
+                document.getElementById(
+                    "teamSelect"
+                ).value =
+                player.team || "";
+
+
+                document.getElementById(
+                    "auctionPrice"
+                ).value =
+                player.auctionPrice || "";
+
+            } else {
+
+                selectedResult = "Unsold";
+
+                unsoldBtn.classList.add(
+                    "selected"
+                );
+
+                soldBtn.classList.remove(
+                    "selected"
+                );
+
+                teamSection.style.display =
+                "none";
+
+                priceSection.style.display =
+                "none";
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   SOLD BUTTON
+========================================= */
+
+soldBtn.addEventListener(
+    "click",
+    function() {
+
+        selectedResult = "Sold";
+
+
+        soldBtn.classList.add(
+            "selected"
+        );
+
+        unsoldBtn.classList.remove(
+            "selected"
+        );
+
+
+        teamSection.style.display =
+        "block";
+
+        priceSection.style.display =
+        "block";
+
+    }
+);
+
+
+/* =========================================
+   UNSOLD BUTTON
+========================================= */
+
+unsoldBtn.addEventListener(
+    "click",
+    function() {
+
+        selectedResult = "Unsold";
+
+
+        unsoldBtn.classList.add(
+            "selected"
+        );
+
+        soldBtn.classList.remove(
+            "selected"
+        );
+
+
+        teamSection.style.display =
+        "none";
+
+        priceSection.style.display =
+        "none";
+
+    }
+);
+
+
+/* =========================================
+   SAVE AUCTION RESULT
+========================================= */
+
+document.getElementById(
+    "saveAuction"
+).addEventListener(
+    "click",
+    async function() {
+
+        const playerId =
+        playerSelect.value;
+
+
+        if (!playerId) {
+
+            showSaveMessage(
+                "Please select a player.",
+                false
+            );
+
+            return;
+
+        }
+
+
+        if (!selectedResult) {
+
+            showSaveMessage(
+                "Please select SOLD or UNSOLD.",
+                false
+            );
+
+            return;
+
+        }
+
+
+        let team = "";
+
+        let price = 0;
+
+
+        if (
+            selectedResult ===
+            "Sold"
+        ) {
+
+            team =
+            document.getElementById(
+                "teamSelect"
+            ).value;
+
+
+            price =
+            Number(
+                document.getElementById(
+                    "auctionPrice"
+                ).value
+            );
+
+
+            if (!team) {
+
+                showSaveMessage(
+                    "Please select a team.",
+                    false
+                );
+
+                return;
+
+            }
+
+
+            if (!price || price <= 0) {
+
+                showSaveMessage(
+                    "Please enter the auction price.",
+                    false
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        try {
+
+            console.log(
+                "Saving auction result..."
+            );
+
+
+            await updateDoc(
+                doc(
+                    db,
+                    "players",
+                    playerId
+                ),
+                {
+
+                    auctionStatus:
+                    selectedResult,
+
+                    team:
+                    team,
+
+                    auctionPrice:
+                    price
+
+                }
+            );
+
+
+            console.log(
+                "Auction result saved."
+            );
+
+
+            showSaveMessage(
+                "✅ Auction result saved successfully!",
+                true
+            );
+
+
+            await loadPlayers();
+
+            await loadAuctionResults();
+
+
+            /* Reset */
+
+            playerSelect.value = "";
+
+            document.getElementById(
+                "playerInfo"
+            ).style.display =
+            "none";
+
+
+            selectedResult = "";
+
+
+            soldBtn.classList.remove(
+                "selected"
+            );
+
+            unsoldBtn.classList.remove(
+                "selected"
+            );
+
+
+            teamSection.style.display =
+            "none";
+
+            priceSection.style.display =
+            "none";
+
+
+            document.getElementById(
+                "teamSelect"
+            ).value = "";
+
+
+            document.getElementById(
+                "auctionPrice"
+            ).value = "";
+
+
+        } catch(error) {
+
+            console.error(
+                "SAVE ERROR:",
+                error
+            );
+
+
+            showSaveMessage(
+                "❌ Could not save: " +
+                error.message,
+                false
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   SAVE MESSAGE
+========================================= */
+
+function showSaveMessage(
+    message,
+    success
+) {
+
+    saveMessage.textContent =
+    message;
+
+    saveMessage.className =
+    success
+        ? "message success"
+        : "message error";
+
+    saveMessage.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   LOAD AUCTION RESULTS
+========================================= */
+
+async function loadAuctionResults() {
+
+    console.log(
+        "Loading auction results..."
+    );
+
+
+    const table =
+    document.getElementById(
+        "auctionTable"
+    );
+
+
+    const snapshot =
+    await getDocs(
+        collection(db, "players")
+    );
+
+
+    let html = "";
+
+    let number = 1;
+
+
+    snapshot.forEach(
+        function(document) {
+
+            const player =
+            document.data();
+
+
+            if (
+                !player.auctionStatus
+            ) {
+
+                return;
+
+            }
+
+
+            const status =
+            player.auctionStatus;
+
+
+            const statusClass =
+            status === "Sold"
+                ? "sold"
+                : "unsold";
+
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${number++}
+                    </td>
+
+                    <td>
+                        ${document.id}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${player.name || "-"}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${player.role || "-"}
+                    </td>
+
+                    <td class="${statusClass}">
+                        ${status}
+                    </td>
+
+                    <td>
+                        ${player.team || "-"}
+                    </td>
+
+                    <td>
+                        ₹${player.auctionPrice || 0}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    if (!html) {
+
+        html = `
+
+            <tr>
+
+                <td colspan="7">
+                    No auction results yet.
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    table.innerHTML =
+    html;
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document.getElementById(
+    "logoutBtn"
+).addEventListener(
+    "click",
+    async function() {
+
+        try {
+
+            await signOut(auth);
+
+        } catch(error) {
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
