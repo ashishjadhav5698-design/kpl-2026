@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPL 2026 - Player Registration</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#222}
+.header{background:linear-gradient(135deg,#ff6b00,#ffb300);color:#fff;text-align:center;padding:25px 15px}
+.logo{font-size:48px}
+.header h1{margin:5px 0;font-size:27px}
+.header h2{margin:5px 0;font-size:21px}
+.header p{margin:8px 0 0}
+.container{width:94%;max-width:700px;margin:25px auto}
+.card{background:#fff;padding:22px;margin-bottom:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.nav{display:flex;justify-content:center;flex-wrap:wrap;background:#222}
+.nav a{color:#fff;text-decoration:none;padding:14px 16px;font-weight:bold}
+.nav a:hover{background:#ff7200}
+label{display:block;font-weight:bold;margin-top:12px}
+input,select{width:100%;padding:13px;margin:7px 0 3px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+button{width:100%;padding:14px;border:0;border-radius:8px;background:#ff7200;color:#fff;font-size:17px;font-weight:bold;margin-top:18px}
+button:disabled{opacity:.65}
+.message{display:none;margin-top:15px;padding:12px;border-radius:8px;line-height:1.5}
+.success{display:block;background:#d4edda;color:#155724}
+.error{display:block;background:#f8d7da;color:#721c24}
+.note{background:#fff3cd;color:#856404;padding:12px;border-radius:8px;margin-bottom:15px}
+.small{font-size:13px;color:#666}
+footer{text-align:center;padding:25px;color:#777}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="logo">🏏</div>
+<h1>KHARADE PREMIER LEAGUE</h1>
+<h2>KPL 2026</h2>
+<p>📝 PLAYER REGISTRATION</p>
+</header>
+
+<nav class="nav">
+<a href="index.html">🏠 HOME</a>
+<a href="registration.html">📝 REGISTER</a>
+<a href="players.html">📋 PLAYERS</a>
+<a href="auction.html">🏆 AUCTION</a>
+<a href="team.html">👥 TEAMS</a>
+</nav>
+
+<div class="container">
+<div class="card">
+<h2>📝 Player Registration Form</h2>
+<div class="note">Please enter your details carefully. Your registration will be added to the KPL 2026 player list.</div>
+
+<form id="registrationForm">
+<label for="name">Full Name *</label>
+<input id="name" type="text" placeholder="Enter full name" maxlength="80" required>
+
+<label for="mobile">Mobile Number *</label>
+<input id="mobile" type="tel" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10" required>
+
+<label for="age">Age *</label>
+<input id="age" type="number" min="10" max="80" placeholder="Enter age" required>
+
+<label for="role">Playing Role *</label>
+<select id="role" required>
+<option value="">Select role</option>
+<option value="Batsman">Batsman</option>
+<option value="Bowler">Bowler</option>
+<option value="All-Rounder">All-Rounder</option>
+<option value="Wicket-Keeper">Wicket-Keeper</option>
+</select>
+
+<label for="batting">Batting Style</label>
+<select id="batting">
+<option value="">Select</option>
+<option value="Right Hand">Right Hand</option>
+<option value="Left Hand">Left Hand</option>
+<option value="Not Applicable">Not Applicable</option>
+</select>
+
+<label for="bowling">Bowling Style</label>
+<select id="bowling">
+<option value="">Select</option>
+<option value="Right Arm Fast">Right Arm Fast</option>
+<option value="Left Arm Fast">Left Arm Fast</option>
+<option value="Right Arm Medium">Right Arm Medium</option>
+<option value="Left Arm Medium">Left Arm Medium</option>
+<option value="Right Arm Spin">Right Arm Spin</option>
+<option value="Left Arm Spin">Left Arm Spin</option>
+<option value="Not Applicable">Not Applicable</option>
+</select>
+
+<label for="village">Village / Area</label>
+<input id="village" type="text" placeholder="Enter village or area" maxlength="80">
+
+<button id="submitBtn" type="submit">🏏 SUBMIT REGISTRATION</button>
+</form>
+
+<div id="message" class="message"></div>
+</div>
+
+<div class="card">
+<h3>ℹ️ Important</h3>
+<p class="small">After registration, your name can be included in the KPL 2026 player pool. Team allocation and auction details are decided separately.</p>
+</div>
+</div>
+
+<footer>© 2026 Kharade Premier League</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBcOoGJTnPZg8wrB_BRb_3GQFtaG_6BEWo",
+    authDomain: "kpl-2026.firebaseapp.com",
+    projectId: "kpl-2026",
+    storageBucket: "kpl-2026.firebasestorage.app",
+    messagingSenderId: "660219856516",
+    appId: "1:660219856516:web:cb23a915081b9e5c6aa4d1",
+    measurementId: "G-VZNHS6KDMR"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const form = document.getElementById("registrationForm");
+const btn = document.getElementById("submitBtn");
+const message = document.getElementById("message");
+
+function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message " + type;
+}
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const age = Number(document.getElementById("age").value);
+    const role = document.getElementById("role").value;
+    const batting = document.getElementById("batting").value;
+    const bowling = document.getElementById("bowling").value;
+    const village = document.getElementById("village").value.trim();
+
+    if (!/^[0-9]{10}$/.test(mobile)) {
+        showMessage("Please enter a valid 10-digit mobile number.", "error");
+        return;
+    }
+
+    if (age < 10 || age > 80) {
+        showMessage("Please enter a valid age.", "error");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "⏳ SUBMITTING...";
+
+    try {
+        const docRef = await addDoc(collection(db, "players"), {
+            name,
+            mobile,
+            age,
+            role,
+            batting,
+            bowling,
+            village,
+            auctionStatus: "Available",
+            team: "",
+            auctionPrice: 0,
+            registeredAt: serverTimestamp()
+        });
+
+        showMessage("Registration successful! Registration ID: " + docRef.id, "success");
+        form.reset();
+    } catch (error) {
+        console.error(error);
+        showMessage("Registration failed: " + error.message, "error");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "🏏 SUBMIT REGISTRATION";
+    }
+});
+</script>
+</body>
+</html>

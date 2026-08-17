@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPL 2026 - Players</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#222}
+.header{background:linear-gradient(135deg,#ff6b00,#ffb300);color:#fff;text-align:center;padding:25px 15px}
+.logo{font-size:48px}
+.header h1{margin:5px 0;font-size:27px}
+.header h2{margin:5px 0;font-size:21px}
+.header p{margin:8px 0 0}
+.nav{display:flex;justify-content:center;flex-wrap:wrap;background:#222}
+.nav a{color:#fff;text-decoration:none;padding:14px 16px;font-weight:bold}
+.nav a:hover{background:#ff7200}
+.container{width:94%;max-width:900px;margin:25px auto}
+.card{background:#fff;padding:20px;margin-bottom:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.search{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:15px}
+.box{background:#222;color:#fff;padding:18px;border-radius:12px;text-align:center}
+.box h2{margin:5px 0}
+.player{background:#fff;border:1px solid #eee;border-left:5px solid #ff7200;padding:15px;margin:10px 0;border-radius:10px}
+.name{font-size:18px;font-weight:bold}
+.role{color:#777;margin-top:5px}
+.status{display:inline-block;margin-top:8px;padding:5px 9px;border-radius:15px;font-size:12px;font-weight:bold;background:#fff3cd;color:#856404}
+.empty{text-align:center;color:#777;padding:25px}
+.error{background:#f8d7da;color:#721c24;padding:12px;border-radius:8px}
+footer{text-align:center;padding:25px;color:#777}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="logo">🏏</div>
+<h1>KHARADE PREMIER LEAGUE</h1>
+<h2>KPL 2026</h2>
+<p>📋 REGISTERED PLAYERS</p>
+</header>
+
+<nav class="nav">
+<a href="index.html">🏠 HOME</a>
+<a href="registration.html">📝 REGISTER</a>
+<a href="players.html">📋 PLAYERS</a>
+<a href="auction.html">🏆 AUCTION</a>
+<a href="team.html">👥 TEAMS</a>
+</nav>
+
+<div class="container">
+<div class="card">
+<h2>📊 Player Pool</h2>
+<div class="summary">
+<div class="box"><div>Total Players</div><h2 id="total">0</h2></div>
+<div class="box"><div>Available</div><h2 id="available">0</h2></div>
+<div class="box"><div>Sold</div><h2 id="sold">0</h2></div>
+<div class="box"><div>Unsold</div><h2 id="unsold">0</h2></div>
+</div>
+</div>
+
+<div class="card">
+<input id="search" class="search" type="search" placeholder="🔍 Search player by name, role or village...">
+</div>
+
+<div class="card">
+<h2>🏏 Players</h2>
+<div id="playerList"><div class="empty">Loading players...</div></div>
+</div>
+</div>
+
+<footer>© 2026 Kharade Premier League</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBcOoGJTnPZg8wrB_BRb_3GQFtaG_6BEWo",
+    authDomain: "kpl-2026.firebaseapp.com",
+    projectId: "kpl-2026",
+    storageBucket: "kpl-2026.firebasestorage.app",
+    messagingSenderId: "660219856516",
+    appId: "1:660219856516:web:cb23a915081b9e5c6aa4d1",
+    measurementId: "G-VZNHS6KDMR"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const list = document.getElementById("playerList");
+const search = document.getElementById("search");
+
+let players = [];
+
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[char]);
+}
+
+function render() {
+    const query = search.value.trim().toLowerCase();
+    const filtered = players.filter(p =>
+        String(p.name || "").toLowerCase().includes(query) ||
+        String(p.role || "").toLowerCase().includes(query) ||
+        String(p.village || "").toLowerCase().includes(query)
+    );
+
+    if (!filtered.length) {
+        list.innerHTML = '<div class="empty">No players found.</div>';
+        return;
+    }
+
+    list.innerHTML = filtered.map(p => `
+        <div class="player">
+            <div class="name">${escapeHtml(p.name || "Unknown Player")}</div>
+            <div class="role">${escapeHtml(p.role || "Player")}${p.village ? " • " + escapeHtml(p.village) : ""}</div>
+            <span class="status">${escapeHtml(p.auctionStatus || "Available")}</span>
+        </div>
+    `).join("");
+}
+
+async function loadPlayers() {
+    try {
+        const snapshot = await getDocs(collection(db, "players"));
+        players = [];
+        snapshot.forEach(doc => players.push({ id: doc.id, ...doc.data() }));
+
+        document.getElementById("total").textContent = players.length;
+        document.getElementById("available").textContent =
+            players.filter(p => p.auctionStatus === "Available" || !p.auctionStatus).length;
+        document.getElementById("sold").textContent =
+            players.filter(p => p.auctionStatus === "Sold").length;
+        document.getElementById("unsold").textContent =
+            players.filter(p => p.auctionStatus === "Unsold").length;
+
+        render();
+    } catch (error) {
+        console.error(error);
+        list.innerHTML = '<div class="error">Could not load players: ' + escapeHtml(error.message) + '</div>';
+    }
+}
+
+search.addEventListener("input", render);
+loadPlayers();
+</script>
+</body>
+</html>
