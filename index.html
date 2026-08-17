@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>KPL 2026 - Kharade Premier League</title>
+<title>KPL 2026 - Player Registration</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -24,65 +19,45 @@ body {
 }
 
 /* HEADER */
-
 .header {
     background: linear-gradient(135deg, #ff6500, #ffb300);
     color: white;
     text-align: center;
-    padding: 35px 15px;
+    padding: 28px 15px;
 }
 
 .logo {
-    font-size: 65px;
+    font-size: 55px;
 }
 
 .header h1 {
-    margin: 5px 0;
-    font-size: 30px;
+    margin: 8px 0 5px;
+    font-size: 28px;
+    font-weight: 400;
 }
 
 .header h2 {
-    margin: 8px 0;
-    font-size: 25px;
+    margin: 0;
+    font-size: 23px;
+    font-weight: 400;
 }
 
 .header p {
-    margin: 8px 0;
-}
-
-/* NAVIGATION */
-
-.nav {
-    background: #222;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.nav a {
-    color: white;
-    text-decoration: none;
-    padding: 15px 18px;
-    font-weight: bold;
-}
-
-.nav a:hover {
-    background: #ff7200;
+    margin: 12px 0 0;
+    font-size: 16px;
 }
 
 /* CONTAINER */
-
 .container {
     width: 94%;
-    max-width: 1000px;
-    margin: 30px auto;
+    max-width: 700px;
+    margin: 25px auto;
 }
 
 /* WELCOME */
-
 .welcome {
     background: white;
-    padding: 30px 20px;
+    padding: 28px 20px;
     border-radius: 18px;
     text-align: center;
     box-shadow: 0 5px 20px rgba(0,0,0,0.08);
@@ -94,373 +69,220 @@ body {
 }
 
 .welcome p {
-    color: #555;
+    color: #666;
     line-height: 1.6;
 }
 
-/* CARDS */
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(210px, 1fr)
-    );
-
-    gap: 18px;
-    margin-top: 25px;
-}
-
-.card {
+/* REGISTRATION CARD */
+.registration-card {
     background: white;
-    padding: 25px 18px;
-    border-radius: 16px;
+    margin-top: 22px;
+    padding: 30px 20px;
+    border-radius: 18px;
     text-align: center;
-
-    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
-
-    transition: 0.2s;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
 
-.card:hover {
-    transform: translateY(-4px);
+.registration-icon {
+    font-size: 60px;
+    margin-bottom: 10px;
 }
 
-.icon {
-    font-size: 45px;
+.registration-card h2 {
+    margin: 8px 0;
+    color: #444;
+    font-weight: 400;
 }
 
-.card h3 {
-    margin: 12px 0 8px;
+.registration-card p {
+    color: #777;
+    line-height: 1.5;
 }
 
-.card p {
-    color: #666;
-    font-size: 14px;
-    min-height: 40px;
-}
-
-.card a {
+/* BUTTON */
+.register-btn {
     display: block;
-
-    background: linear-gradient(
-        135deg,
-        #ff6500,
-        #ff9d00
-    );
-
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    background: linear-gradient(135deg, #ff6500, #ff9d00);
     color: white;
-
     text-decoration: none;
-
-    padding: 12px;
-
-    border-radius: 9px;
-
+    border-radius: 8px;
+    font-size: 17px;
     font-weight: bold;
+    border: none;
+}
+
+.register-btn:hover {
+    opacity: 0.9;
 }
 
 /* INFORMATION */
-
 .info {
     background: white;
-    margin-top: 25px;
-    padding: 25px;
-    border-radius: 16px;
-
-    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+    margin-top: 22px;
+    padding: 25px 20px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
 
 .info h2 {
-    text-align: center;
     color: #ff6500;
+    font-weight: 400;
 }
 
 .info p {
-    padding: 5px 0;
+    color: #666;
+    line-height: 1.7;
+}
+
+.info ul {
+    color: #666;
+    line-height: 2;
+    padding-left: 25px;
 }
 
 /* FOOTER */
-
 .footer {
     margin-top: 40px;
-    background: #222;
-    color: white;
-    text-align: center;
     padding: 25px 15px;
+    background: #222;
+    color: #ccc;
+    text-align: center;
+    font-size: 14px;
 }
 
 .footer p {
-    margin: 7px;
+    margin: 6px 0;
 }
 
 /* MOBILE */
+@media (max-width: 480px) {
 
-@media (max-width: 600px) {
+    .header {
+        padding: 25px 10px;
+    }
+
+    .logo {
+        font-size: 48px;
+    }
 
     .header h1 {
-        font-size: 24px;
+        font-size: 23px;
     }
 
     .header h2 {
-        font-size: 21px;
+        font-size: 20px;
     }
 
-    .nav a {
-        padding: 12px 10px;
-        font-size: 14px;
+    .container {
+        width: 94%;
     }
 
+    .welcome,
+    .registration-card,
+    .info {
+        padding: 24px 18px;
+    }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- ================= HEADER ================= -->
-
+<!-- HEADER -->
 <header class="header">
 
-    <div class="logo">
-        🏏
-    </div>
+    <div class="logo">🏏</div>
 
-    <h1>
-        KHARADE PREMIER LEAGUE
-    </h1>
+    <h1>KHARADE PREMIER LEAGUE</h1>
 
-    <h2>
-        KPL 2026
-    </h2>
+    <h2>KPL 2026</h2>
 
-    <p>
-        🏆 Cricket Tournament
-    </p>
+    <p>📝 Player Registration</p>
 
 </header>
 
 
-
-<!-- ================= NAVIGATION ================= -->
-
-<nav class="nav">
-
-    <a href="index.html">
-        🏠 HOME
-    </a>
-
-    <a href="registration.html">
-        📝 REGISTER
-    </a>
-
-    <a href="players.html">
-        📋 PLAYERS
-    </a>
-
-    <a href="auction.html">
-        🏆 AUCTION
-    </a>
-
-    <a href="team.html">
-        👥 TEAMS
-    </a>
-
-</nav>
-
-
-
-<!-- ================= MAIN ================= -->
-
-<div class="container">
-
+<!-- MAIN CONTENT -->
+<main class="container">
 
     <!-- WELCOME -->
+    <section class="welcome">
 
-    <div class="welcome">
-
-        <h2>
-            Welcome to KPL 2026! 🏏
-        </h2>
+        <h2>Welcome to KPL 2026! 🏏</h2>
 
         <p>
-            Welcome to the official
-            <b>Kharade Premier League 2026</b>
-            website.
+            Welcome to the official Kharade Premier League
+            2026 player registration website.
         </p>
 
         <p>
-            Register for the tournament,
-            view registered players,
-            follow the auction and
-            check team squads.
+            Players can register themselves for the
+            KPL 2026 cricket tournament using the
+            registration form below.
         </p>
 
-    </div>
+    </section>
 
 
+    <!-- ONLY PUBLIC OPTION -->
+    <section class="registration-card">
 
-    <!-- ================= OPTIONS ================= -->
+        <div class="registration-icon">📝</div>
 
-    <div class="cards">
-
-
-        <!-- REGISTRATION -->
-
-        <div class="card">
-
-            <div class="icon">
-                📝
-            </div>
-
-            <h3>
-                Player Registration
-            </h3>
-
-            <p>
-                Register yourself as a
-                KPL 2026 player.
-            </p>
-
-            <a href="registration.html">
-                REGISTER NOW
-            </a>
-
-        </div>
-
-
-
-        <!-- PLAYERS -->
-
-        <div class="card">
-
-            <div class="icon">
-                📋
-            </div>
-
-            <h3>
-                Registered Players
-            </h3>
-
-            <p>
-                View all players registered
-                for KPL 2026.
-            </p>
-
-            <a href="players.html">
-                VIEW PLAYERS
-            </a>
-
-        </div>
-
-
-
-        <!-- AUCTION -->
-
-        <div class="card">
-
-            <div class="icon">
-                🏆
-            </div>
-
-            <h3>
-                KPL Auction
-            </h3>
-
-            <p>
-                View and manage the
-                KPL player auction.
-            </p>
-
-            <a href="auction.html">
-                OPEN AUCTION
-            </a>
-
-        </div>
-
-
-
-        <!-- TEAMS -->
-
-        <div class="card">
-
-            <div class="icon">
-                👥
-            </div>
-
-            <h3>
-                KPL Teams
-            </h3>
-
-            <p>
-                View teams, squads and
-                auction results.
-            </p>
-
-            <a href="team.html">
-                VIEW TEAMS
-            </a>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- ================= INFO ================= -->
-
-    <div class="info">
-
-        <h2>
-            🏏 KPL 2026
-        </h2>
+        <h2>Player Registration</h2>
 
         <p>
-            <b>Tournament:</b>
-            Kharade Premier League
+            Register yourself as a KPL 2026 player.
         </p>
 
         <p>
-            <b>Edition:</b>
-            2026
+            Please enter your details carefully before
+            submitting the registration form.
         </p>
+
+        <a href="registration.html" class="register-btn">
+            📝 REGISTER NOW
+        </a>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+    <section class="info">
+
+        <h2>📢 Important Information</h2>
 
         <p>
-            <b>Sport:</b>
-            Cricket
+            Please make sure that the information provided
+            during registration is correct.
         </p>
 
-        <p>
-            <b>Registration:</b>
-            Open
-        </p>
+        <ul>
+            <li>Register only once.</li>
+            <li>Enter your correct mobile number.</li>
+            <li>Enter your correct village and player details.</li>
+            <li>Keep your Registration ID safely after registration.</li>
+            <li>Contact the KPL organizers for any issues.</li>
+        </ul>
 
-    </div>
+    </section>
+
+</main>
 
 
-</div>
-
-
-
-<!-- ================= FOOTER ================= -->
-
+<!-- FOOTER -->
 <footer class="footer">
 
-    <p>
-        🏏 <b>KHARADE PREMIER LEAGUE 2026</b>
-    </p>
+    <p>🏏 KHARADE PREMIER LEAGUE 2026</p>
 
-    <p>
-        © 2026 KPL | All Rights Reserved
-    </p>
+    <p>© 2026 Kharade Premier League</p>
+
+    <p>Player Registration Portal</p>
 
 </footer>
 
-
 </body>
-
 </html>
