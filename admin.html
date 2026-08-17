@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>KPL 2026 - Admin Dashboard</title>
@@ -10,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+
         .admin-card {
             background: white;
             border-radius: 15px;
@@ -91,6 +95,7 @@
             text-align: center;
             padding: 30px;
         }
+
     </style>
 
 </head>
@@ -108,7 +113,6 @@
     <p>ADMIN DASHBOARD</p>
 
 </header>
-
 
 <main class="container">
 
@@ -149,17 +153,35 @@
             </div>
 
             <button type="submit" class="submit-btn">
+
                 🔐 LOGIN
+
             </button>
 
         </form>
 
     </div>
 
-
     <!-- DASHBOARD -->
 
     <div id="dashboard" style="display:none;">
+
+        <div class="admin-card">
+
+            <h2>🔑 Admin User UID</h2>
+
+            <p
+                id="adminUid"
+                style="word-break:break-all;font-family:monospace;background:#f5f5f5;padding:12px;border-radius:8px;"
+            >
+                Loading UID...
+            </p>
+
+            <small>
+                Use this UID in your Firebase Firestore security rules to identify the admin.
+            </small>
+
+        </div>
 
         <div class="stats">
 
@@ -172,7 +194,6 @@
             </div>
 
         </div>
-
 
         <div class="admin-card">
 
@@ -211,7 +232,9 @@
                         <tr>
 
                             <td colspan="8" class="loading">
+
                                 Loading players...
+
                             </td>
 
                         </tr>
@@ -224,10 +247,10 @@
 
         </div>
 
-
         <button
             id="logoutBtn"
-            class="submit-btn logout">
+            class="submit-btn logout"
+        >
 
             🚪 LOGOUT
 
@@ -237,7 +260,6 @@
 
 </main>
 
-
 <footer>
 
     <p>© 2026 Kharade Premier League</p>
@@ -245,7 +267,6 @@
     <p>KPL 2026 • Admin Dashboard</p>
 
 </footer>
-
 
 <script type="module">
 
@@ -365,6 +386,8 @@
                 loginBox.style.display = "none";
 
                 dashboard.style.display = "block";
+
+                document.getElementById("adminUid").textContent = user.uid;
 
                 await loadPlayers();
 
